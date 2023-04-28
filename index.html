@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IP Tracker</title>
+    <link rel="shortcut icon" href="favicon.png" type="image/x-icon">
+    <!-- bootstrap css -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css">
+    <!-- MDB -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.20.0/css/mdb.min.css" rel="stylesheet" />
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+        }
+    </style>
+</head>
+
+<body>
+    <h2 class="text-center my-3">IP Tracker </h2>
+    <div class="container row m-0">
+        <!-- form section  -->
+        <form action="" class="col-10 col-lg-8 col-md-10  mx-auto" id="search_from">
+            <div class="input-group mb-3">
+                <input type="text" id="inputData" class="form-control form-control-lg" placeholder="Enter Ip Address">
+                <button type="submit" class="input-group-text btn-success"><i class="bi bi-search me-2"></i>
+                    Track</button>
+            </div>
+        </form>
+        <!-- result section  -->
+        <div id="ipData"></div>
+    </div>
+    <!-- jquery  -->
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"
+        integrity="sha256-oP6HI9z1XaZNBrJURtCoUT5SUnxFr8s3BzRl+cbzUq8=" crossorigin="anonymous"></script>
+    <!-- bootstrap  -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- MDB -->
+    <script type="text/javascript"
+        src="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.20.0/js/mdb.min.js"></script>
+    <script>
+
+        $(document).ready(function () {
+            $('#search_from').submit(function (e) {
+                e.preventDefault();
+                const fromData = document.getElementById('inputData').value;
+                const token = 'your api key'
+                const url = `https://ipinfo.io/${fromData}?token=${token}`
+                document.getElementById('ipData').innerHTML =
+                    ` 
+                        <div class="col-12 col-lg-6 col-md-8 mx-auto my-5 bg-success text-white p-4 shadow-3">
+                        <h5 class="text-bold text-center">Loading.......</h5>
+                        </div>
+                    `
+                async function logJSONData() {
+                    const response = await fetch(url);
+                    const jsonData = await response.json();
+                    document.getElementById('ipData').innerHTML =
+                        ` 
+                        <div class="col-12 col-lg-6 col-md-8 mx-auto my-5 bg-success text-white p-4 shadow-3">
+                        <h5 class="text-bold">IP : <span>${jsonData.ip}</span></h5>
+                        <h5>City : <span>${jsonData.city}</span></h5>
+                        <h5>Region : <span>${jsonData.region}</span></h5>
+                        <h5>Country : <span>${jsonData.country}</span></h5>
+                        <h5>Postal: <span>${jsonData.postal}</span></h5>
+                        <h5>Time Zone: <span>${jsonData.timezone}</span></h5>
+                        <h5>Location : <span>${jsonData.loc}</span></h5>
+                        <h5>Org : <span>${jsonData.org}</span></h5>
+                        </div>
+                    `
+                }
+                logJSONData()
+            })
+        })
+    </script>
+
+</body>
+
+</html>
